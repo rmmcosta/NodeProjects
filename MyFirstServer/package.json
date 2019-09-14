@@ -1,0 +1,11 @@
+{
+  "name": "myfirstserver",
+  "version": "1.0.0",
+  "description": "example from the book -Introduçao ao Desenvolvimento Moderno para a Web-",
+  "main": "helloworld.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rmmcosta",
+  "license": "ISC"
+}
