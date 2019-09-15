@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mustache</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.min.js"></script>
+</head>
+
+<body onload="welcomeMaria()">
+    <div id='target'>
+        <script id="template" type="x-tmpl-mustache">
+            
+        </script>
+    </div>
+    <button onclick="welcomeFreddy()">Freddy</button>
+    <script>
+        const template = 'Welcome {{ surname }}, {{ name }}';
+        function welcomeFreddy() {
+            const rendered = Mustache.render(template, {
+                name: 'Freddy',
+                surname: 'Maluco'
+            });
+            $('#target').html(rendered);
+        }
+        function welcomeMaria() {
+            console.log('welcome Maria');
+            console.log(template);
+            const rendered = Mustache.render(template, {
+                name: 'Maria',
+                surname: 'Céu'
+            });
+            console.log(rendered);
+            $('#target').html(rendered);
+        }
+    </script>
+</body>
+
+</html>
