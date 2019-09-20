@@ -1,0 +1,37 @@
+A promise is an asynchronous action that may complete at some point and produce a value. 
+It is able to notify anyone who is interested when its value is available.
+
+The easiest way to create a promise is by calling Promise.resolve. 
+This function ensures that the value you give it is wrapped in a promise. 
+If it’s already a promise, it is simply returned—otherwise, you get a new promise that immediately finishes with your value as its result.
+
+let fifteen = Promise.resolve(15);
+fifteen.then(value => console.log(`Got ${value}`));
+// → Got 15
+
+To get the result of a promise, you can use its then method. 
+This registers a callback function to be called when the promise resolves and produces a value. 
+You can add multiple callbacks to a single promise, and they will be called, even if you add them after the promise has already resolved (finished).
+
+But that’s not all the then method does. 
+It returns another promise, which resolves to the value that the handler function returns or, 
+if that returns a promise, waits for that promise and then resolves to its result.
+
+It is useful to think of promises as a device to move values into an asynchronous reality. 
+A normal value is simply there. A promised value is a value that might already be there or might appear at some point in the future. 
+Computations defined in terms of promises act on such wrapped values and are executed asynchronously as the values become available.
+
+To create a promise, you can use Promise as a constructor. 
+It has a somewhat odd interface—the constructor expects a function as argument, which it immediately calls, passing it a function that it can use to resolve the promise. 
+It works this way, instead of for example with a resolve method, so that only the code that created the promise can resolve it.
+
+This is how you’d create a promise-based interface for the readStorage function:
+
+function storage(nest, name) {
+  return new Promise(resolve => {
+    nest.readStorage(name, result => resolve(result));
+  });
+}
+
+storage(bigOak, "enemies")
+  .then(value => console.log("Got", value));
