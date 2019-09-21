@@ -1,0 +1,15 @@
+{
+  "name": "emailtest",
+  "version": "1.0.0",
+  "description": "tests with email and node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rmmcosta",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^6.3.0",
+    "nodemailer-smtp-transport": "^2.7.4"
+  }
+}
