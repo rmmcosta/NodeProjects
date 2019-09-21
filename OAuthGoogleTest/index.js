@@ -20,11 +20,11 @@ console.log('Server running at http://109.49.164.202:3000/');*/
 	console.log(await publicIp.v6());
 	//=> 'fe80::200:f8ff:fe21:67cf'
 })();
-
+//use https://localtunnel.github.io/www/ to access from outside
 passport.use(new gstrategy({
     clientID: '4592422615-1242hffmb60d2vgvgnftidqh0fflaoih.apps.googleusercontent.com',
     clientSecret: '7vpka8AOpT-fxy-fzMnBVO9U',
-    callbackURL: "http://www.example.com/auth/google/callback"
+    callbackURL: "https://bitter-dodo-22.localtunnel.me/callback"
 },
     function (accessToken, refreshToken, profile, done) {
         User.findOrCreate({ googleId: profile.id }, function (err, user) {
@@ -54,3 +54,15 @@ app.set('host', process.env.HOST || '0.0.0.0');
 http.createServer(app).listen(app.get('port'), app.get('host'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+app.get('/callback',function(req,res,next){
+    res.send('callback with success!');
+    next();
+});
+
+app.get('/privacypolicy',function(req,res,next){
+    res.send('privacy policy with success!');
+    next();
+});
+
+//use https://localtunnel.github.io/www/ to access from outside
