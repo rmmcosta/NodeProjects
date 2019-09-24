@@ -1,0 +1,15 @@
+{
+  "name": "localloginv2",
+  "version": "1.0.0",
+  "description": "https://solvemprobler.com/blog/2013/02/23/authentication-using-passportjs/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rmmcosta",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.1"
+  }
+}

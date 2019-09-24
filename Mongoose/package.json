@@ -1,0 +1,14 @@
+{
+  "name": "mongoosetest",
+  "version": "1.0.0",
+  "description": "tests with mongoose and mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rmmcosta",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.7.1"
+  }
+}
