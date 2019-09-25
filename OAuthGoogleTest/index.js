@@ -24,9 +24,10 @@ console.log('Server running at http://109.49.164.202:3000/');*/
 passport.use(new gstrategy({
     clientID: '4592422615-1242hffmb60d2vgvgnftidqh0fflaoih.apps.googleusercontent.com',
     clientSecret: '7vpka8AOpT-fxy-fzMnBVO9U',
-    callbackURL: "https://bitter-dodo-22.localtunnel.me/callback"
+    callbackURL: "https://bad-seahorse-16.localtunnel.me/callback"
 },
     function (accessToken, refreshToken, profile, done) {
+        console.log('g strategy!');
         User.findOrCreate({ googleId: profile.id }, function (err, user) {
             return done(err, user);
         });
@@ -66,3 +67,4 @@ app.get('/privacypolicy',function(req,res,next){
 });
 
 //use https://localtunnel.github.io/www/ to access from outside
+//lt --port 8000
