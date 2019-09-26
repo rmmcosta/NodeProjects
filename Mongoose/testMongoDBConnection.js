@@ -13,3 +13,19 @@ mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true }, (
 
 //Get the default connection
 const db = mongoose.connection;
+
+db.on('open', function(){
+    db.collectionNames(function(error, names) {
+      if (error) {
+        throw new Error(error);
+      } else {
+        names.map(function(name) {
+          console.log('found collection %s', name);
+        });
+      }
+    });
+  });
+  
+  db.on('error', function(error){
+    throw new Error(error);
+  })
