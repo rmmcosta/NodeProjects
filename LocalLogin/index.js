@@ -1,16 +1,15 @@
+//import the needed modules
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const passportlocal = require('passport-local');
+const localStrategy = passportlocal.Strategy;
+const session = require('express-session');
+const bodyParser = require('body-parser');
 const User = require('./models/user');
-const LocalStrategy = require('passport-local').Strategy;
 
-//connect to the database
-//Set up default mongoose connection
+//establish connection with the mongodb
 const mongoDB = 'mongodb://127.0.0.1/locallogin';
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
     if (!err) {
@@ -20,62 +19,82 @@ mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true }, (
     }
 });
 
-//Get the default connection
-const db = mongoose.connection;
-
-
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded({ extended: true }));
 //use session and parsers
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
-app.use(session({
-    secret: 'secret key',
-    resave: true,
-    saveUninitialized: true
-}));
 
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(cookieParser());
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
 
-//initialize passport
-passport.use(new LocalStrategy(
+//routes for main, login (get and post), register (get and post) and list users
+
+app.get('/register', function (req, res) {
+    res.sendFile(__dirname + '/views/register.html');
+});
+
+//login
+
+passport.use(new localStrategy(
     function (username, password, done) {
-        console.log('new local strategy');
+        console.log('local strategy');
         console.log(username);
         console.log(password);
-        /*User.getUserByUsername(username, function (err, user) {
+        User.getUserByUsername(username, function (err, user) {
+            console.log(user);
             if (err) {
                 return done(err);
             }
             if (!user) {
+                console.log('unknown user!');
                 return done(null, false, { message: 'Unknown user!' });
             }
-            if (!User.verifyPassword(password, user.password)) {
-                return done(null, false, { message: 'Wrong password!' });
-            }
-            return done(null, user);
-        });*/
-        const mockuser = {
-            name: { first: 'Ricardo', last: 'Costa' },
-            _id: '5d875a2ead223a4f8a6a3243',
-            username: 'rmmcosta',
-            password:
-                '$2a$10$HK060f4QYVZlr3ZgQtRz2O8jtb5EexEuOovYSH.lXC5TKgKB5oH.6',
-            email: 'ricardocosta101085@gmail.com',
-            __v: 0
-        }
-        return done(null, mockuser);
+            User.verifyPassword(password, user.password, function (err, res) {
+                if (res) {
+                    console.log('valid password!');
+                    return done(null, user);
+                } else {
+                    console.log('wrong password!');
+                    return done(null, false, { message: 'Wrong password!' });
+                }
+            });
+        });
     }
 ));
+
+//session init
+app.use(session({
+    secret: 'the secret',
+    resave: true,
+    saveUninitialized: true
+}));
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
+
+//it's mandatory to implement serialize and deserialize
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
-    User.getUserById(id, function (err, user) {
+    /*userModel.getUserById(id, function (err, user) {
         done(err, user);
-    });
+    });*/
+    done(null, null);
 });
+
+app.get('/login', function (req, res) {
+    res.sendFile(__dirname + '/views/login.html');
+});
+
+app.post('/login',
+    passport.authenticate('local', { failureRedirect: '/login' }),
+    function (req, res) {
+        res.redirect('/');
+    });
 
 //post api to register users
 app.post('/register', urlencodedParser, function (req, res) {
@@ -100,38 +119,9 @@ app.post('/register', urlencodedParser, function (req, res) {
     });
 });
 
-app.get('/login', function (req, res, next) {
-    res.sendFile(__dirname + '/views/login.html');
+app.get('/', function (req, res) {
+    res.send('Welcome!');
 });
 
-app.post('/login', passport.authenticate('local', {
-    failureRedirect: '/login',
-    successRedirect: '/'
-})
-);
-
-/*app.post('/login', function (req, res,next) {
-    const user = User.getUserByUsername('rmmcosta', function (err, user) {
-        if (err) {
-            console.log(err);
-            return err;
-        } else {
-            console.log(user);
-            return user;
-        }
-    });
-    res.send(user.username);
-}
-);*/
-
-app.get('/user', function (req, res) {
-    res.send(req.user);
-});
-
-// Endpoint to logout
-app.get('/logout', function (req, res) {
-    req.logout();
-    res.send(null)
-});
-
-app.listen(port, () => console.log('App listening on port 3000!'));
+//start listen on port 3000
+app.listen(3000, () => console.log('App listening on port 3000!'));
