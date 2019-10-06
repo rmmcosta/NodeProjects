@@ -1,40 +1,39 @@
 const router = require('express').Router();
 
-var sess;
-
 router.get('/', function (req, res, next) {
-    console.log('root',req.session);
-    sess = req.session;
-    if (sess.email) {
+    console.log('root', req.session);
+    if (req.session.email) {
         res.redirect('/admin');
     } else {
         console.log('do the login first');
-        res.sendFile(__dirname + '/../views/index.html', {'root': '/'});
+        res.sendFile(__dirname + '/../views/index.html', { 'root': '/' });
     }
 });
 router.post('/login', function (req, res) {
-    sess = req.session;
-    console.log('login',req.session);
-    if(!sess.email) {
+    console.log('login', req.session);
+    if (!req.session.email) {
         console.log(req.body.email);
-        sess.email = req.body.email;
+        req.session.email = req.body.email;
     }
     res.redirect('/');
 });
 router.get('/logout', function (req, res) {
     console.log('logout');
-    sess = req.session;
-    if(sess.email) {
-        sess.destroy(function(err){
-            res.send(err);
+    if (req.session.email) {
+        req.session.destroy(function (err) {
+            if (err) {
+                res.send(err);
+            }
+            else {
+                res.removeHeader('Cookie');
+                res.redirect('/');
+            }
         });
     }
-    res.redirect('/');
 });
 router.get('/admin', function (req, res) {
-    sess = req.session;
-    if (sess.email) {
-        res.write(`<h1>Welcome back ${sess.email}</h1>`);
+    if (req.session.email) {
+        res.write(`<h1>Welcome back ${req.session.email}</h1>`);
         res.end('<a href="/logout">Logout</a>');
     } else {
         res.write('<h1>Please login first.</h1>');
