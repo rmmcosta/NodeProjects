@@ -1,0 +1,11 @@
+{
+  "name": "jsonrequire",
+  "version": "1.0.0",
+  "description": "test with require json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rmmcosta",
+  "license": "ISC"
+}
