@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header text-center">
+            <h1><span class="fa fa-anchor"></span>Profile Page</h1>
+            <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+        </div>
+
+        <div class="row">
+
+            <!-- LOCAL INFORMATION -->
+            <div class="col-sm-6 mx-auto">
+                <div class="card mt-1 p-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><span class="fa fa-user"></span>Local</h5>
+                        <p>
+                            <strong>id</strong>: <%= user._id %><br>
+                            <strong>email</strong>: <%= user.local.email %><br>
+                            <strong>password</strong>: <%= user.local.password %>
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--
+        include scripts
+    -->
+    <%- include('../partials/scripts'); %>
+
+</body>
+
+</html>
