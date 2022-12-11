@@ -10,7 +10,7 @@
   "author": "rmmcosta",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mustache": "^3.1.0",
     "mustache-express": "^1.2.8"
   }
